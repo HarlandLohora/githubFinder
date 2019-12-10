@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './Components/Layout/Navbar';
-import Users from './Components/Users/Users'
+import Users from './Components/Users/Users';
+import axios from 'axios'
 import './App.css';
 
 class App extends Component{
@@ -8,6 +9,18 @@ class App extends Component{
     icon : "fab fa-github",
     title: " Github Finder"
   }
+
+  state = {
+    users  : [],
+    loading: false
+  }
+
+  async componentDidMount(){
+    this.setState({ loading: true })
+    var resp = await axios.get('https://api.github.com/users')
+    this.setState({ loading: false, users: resp.data })
+  }
+
   render(){
     return(
       <div>
@@ -16,7 +29,10 @@ class App extends Component{
           title = " Github Finder"
         />
         <div className="container">
-          <Users />
+          <Users 
+            loading = { this.state.loading }
+            users   = { this.state.users }
+          />
         </div>
       </div>
     )
