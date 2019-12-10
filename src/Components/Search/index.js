@@ -25,6 +25,9 @@ class Search extends Component{
                     />
                     <input type="submit" value="search" className="btn btn-dark btn-block"/>
                 </form>
+                <button className="btn btn-light btn-block" onClick = { this.props.clearUsers }>
+                    Clear
+                </button>
             </div>
         )
     }

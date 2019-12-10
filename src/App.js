@@ -13,20 +13,23 @@ class App extends Component{
   }
 
   state = {
-    users  : [],
-    loading: false
+    users   : [],
+    allUsers: [],
+    loading : false
   }
 
   async componentDidMount(){
     this.setState({ loading: true })
     const resp = await axios.get(`https://api.github.com/users?client_id=${ process.env.GITHUB_ID}&client_secret=${ process.env.GITHUB_SECRET }`)
-    this.setState({ loading: false, users: resp.data })
+    this.setState({ loading: false, users: resp.data, allUsers: resp.data })
   }
   searchUsers = async text => {
     this.setState({ loading: true })
     const resp = await axios.get(`https://api.github.com/search/users?q=${ text }&client_id=${ process.env.GITHUB_ID}&client_secret=${ process.env.GITHUB_SECRET }`)
-    console.log( 'data-> ', resp.data );
     this.setState({ loading: false, users: resp.data.items })
+  }
+  clearUsers = () => {
+    this.setState({ users: this.state.allUsers })
   }
   render(){
     return(
@@ -38,6 +41,7 @@ class App extends Component{
         <div className="container">
           <Search
             searchUsers = { this.searchUsers }
+            clearUsers  = { this.clearUsers  }
           />
           <Users 
             loading = { this.state.loading }
